@@ -3,6 +3,9 @@ const fs = require('fs');
 const http = require('http');
 // const path = require('path');
 const url = require('url');
+
+const slugify = require('slugify');
+
 const replaceTemplate = require('./modules/replaceTemplate');
 
 // Synchronous = Blocking
@@ -76,6 +79,13 @@ const tempProduct = fs.readFileSync(
 // Routing-1
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
+
+const slugs = dataObj.map((el) => slugify(el.productName, { lower: true }));
+console.log(slugs);
+
+// console.log(slugify('Fresh Avocados', { lower: true }));
+// result in Terminal
+// fresh-avocados
 
 const server = http.createServer((req, res) => {
   // console.log(req);

@@ -18,6 +18,7 @@
 /4-natours/starter
 
 # dependencies
+*.pdf
 */node_modules
 /.pnp
 .pnp.js

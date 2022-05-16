@@ -74,3 +74,27 @@ npm install express
 ```
 npm uninstall express
 ```
+
+# Setting up Prettier in VS Code
+
+- workplace
+  - Format on Save
+
+# An Overview of How the Web Works
+
+![Overview](/docs/client-server.png)
+
+# HTTP in Action
+
+- Network in devtool
+  - check at `Disable Cache`
+
+# Front-End vs Back-End Web Development
+
+![Front and Backend](/docs/front-back-end.png)
+
+![Static vs Dynamic](/docs/static-dynamic.png)
+
+![Dynamic vs API](/docs/dynamic-api.png)
+
+![API and Consumers](/docs/api-consumers.png)

@@ -1,5 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+/**/app[0-9]*.js
+/**/server[0-9]*.js
+/**/.eslintrc[0-9]*.json
+/**/tourRoutes[0-9]*.js
+/**/userRoutes[0-9]*.js
+/**/tourController[0-9]*.js
+/**/userController[0-9]*.js
+/**/package[0-9]*.json
+
 /complete-node-bootcamp-master
 /1-node-farm/final
 /1-node-farm/starter

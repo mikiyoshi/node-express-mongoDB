@@ -13,13 +13,13 @@ npm install slugify
 
 - nodemon
 
-<!-- npm install すると毎回再インストール必要
+<!--
+npm install すると毎回再インストール必要
 node_modules, package-lock.json削除
 動かない時は、package-lock.jsonをコピーして持ってくる
 nvm install v16
 npm install
 npm install --save-dev nodemon
-
  -->
 
 ```

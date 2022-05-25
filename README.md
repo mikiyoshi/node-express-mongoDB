@@ -13,8 +13,16 @@ npm install slugify
 
 - nodemon
 
+<!-- npm install すると毎回再インストール必要
+node_modules, package-lock.json削除
+動かない時は、package-lock.jsonをコピーして持ってくる
+nvm install v16
+npm install
+npm install --save-dev nodemon
+ -->
+
 ```
-npm install nodemon
+npm install --save-dev nodemon
 ```
 
 - run command
@@ -98,3 +106,28 @@ npm uninstall express
 ![Dynamic vs API](/docs/dynamic-api.png)
 
 ![API and Consumers](/docs/api-consumers.png)
+
+# MongoDB setup
+
+79. Using Compass App for CRUD Operations
+80. Creating a Hosted Database with Atlas
+81. Connecting to Our Hosted Database
+
+82. Section Intro
+83. Connecting Our Database with the Express App
+84. What is Mongoose?
+
+npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react --save-dev
+
+npm i slugify
+
+npm i validator
+
+# 111. Debugging Node.js with ndb <!-- 重要! Debug を使ってエラーを探す方法 エラーが出たら何度もやり方を確認しよう! -->
+
+## Chrome and VScode can edit debugging both side
+
+npm i ndb --save-dev
+
+- "debug": "npx ndb server.js" at package.json <!-- nvm install v16 -->
+- npm run debug

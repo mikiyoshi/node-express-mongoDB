@@ -28,6 +28,35 @@ const handleDuplicateFieldsDB = err => {
   return new AppError(message, 400);
 };
 
+// production error validation at postman "Get All Tours" with header KEY: Authorization, VALUE: Bearer errorTokenID
+// const handleJWTError = err => // for production test when config.env from JWT_EXPIRES_IN=90d to JWT_EXPIRES_IN=5000
+const handleJWTError = () =>
+  new AppError('Invalid token. Please log in again!', 401);
+// test at postman "Get All Tours" with header
+// result production error in postman
+// {
+//   "status": "fail",
+//   "message": "Invalid token. Please log in again!"
+// }
+// if we update config.env from JWT_EXPIRES_IN=90d to JWT_EXPIRES_IN=5000
+// test at postman "Login", then copy token and paste "Get All Tours" with header VALUE: Bearer
+// result production error in postman
+// {
+//   "status": "error",
+//   "message": "Something went very wrong!"
+// }
+
+// const handleJWTExpiredError = err => // for production test when config.env from JWT_EXPIRES_IN=90d to JWT_EXPIRES_IN=5000
+const handleJWTExpiredError = () =>
+  new AppError('Your token has expired! Please log in again', 401);
+// if we update config.env from JWT_EXPIRES_IN=90d to JWT_EXPIRES_IN=5000
+// test at postman "Login", then copy token and paste "Get All Tours" with header VALUE: Bearer
+// result production error in postman
+// {
+//     "status": "fail",
+//     "message": "Your token has expired! Please log in again"
+// }
+
 // production error validation at postman "Update Tour"
 const handleValidationErrorDB = err => {
   const errors = Object.values(err.errors).map(el => el.message);
@@ -93,6 +122,11 @@ module.exports = (err, req, res, next) => {
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError')
       error = handleValidationErrorDB(error);
+    // if (error.name === 'JsonWebTokenError') error = handleJWTError(error);  // for production test when config.env from JWT_EXPIRES_IN=90d to JWT_EXPIRES_IN=5000
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    // if (error.name === 'TokenExpiredError')
+    //   error = handleJWTExpiredError(error);  // for production test when config.env from JWT_EXPIRES_IN=90d to JWT_EXPIRES_IN=5000
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
     sendErrorProd(error, res);
   }

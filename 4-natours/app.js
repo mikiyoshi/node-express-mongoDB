@@ -1,5 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -9,19 +14,59 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// 1) MIDDLEWARES
-console.log(process.env.NODE_ENV);
+// 1) GLOBAL MIDDLEWARES
+// console.log(process.env.NODE_ENV);
+// Set Security HTTP headers // documentation from https://github.com/helmetjs/helmet
+app.use(helmet());
 
+// Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use(express.json());
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 100, // secure from when same IP 100 times connection
+  windowMs: 60 * 60 * 1000, // window milliseconds 60min, 60sec, 1000milliseconds
+  message: 'Too many request from this IP, please try again an hour!'
+});
 
+app.use('/api', limiter);
+
+// Body parser, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize()); // this is protect security problem without "email: : { "$gt": ""}"
+
+// Data sanitization against XSS // malicious 悪意のある
+app.use(xss());
+
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price'
+    ]
+  })
+);
+// test at postman "Get All Tours"
+// setting Params
+// {{URL}}api/v1/tours?sort=duration&sort=price // この場合は price(最後に書かれたもの) が優先されてソートする
+// {{URL}}api/v1/tours?duration=9&duration=5 // result in postman // duration=5 or 9
+
+// Serving static files
 app.use(express.static(`${__dirname}/public`));
 
+// Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  // console.log(req.headers); // take look header
   // console.log(x); // UNCAUGHT error test
   next();
 });

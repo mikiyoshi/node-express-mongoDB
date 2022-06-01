@@ -1,4 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+config.env
 
 /**/history[0-9]*.txt
 /**/app[0-9]*.js
@@ -13,6 +14,9 @@
 /**/tours-simple[0-9]*.json
 /**/errorController[0-9]*.js
 /**/appError[0-9]*.js
+/**/userModel[0-9]*.js
+/**/authController[0-9]*.js
+/**/apiFeatures[0-9]*.js
 
 /complete-node-bootcamp-master
 /1-node-farm/final

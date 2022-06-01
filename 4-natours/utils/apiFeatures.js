@@ -14,7 +14,7 @@ class APIFeatures {
     // 1B) Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`); // Regular expressions 正規表現
-    console.log(JSON.parse(queryStr));
+    // console.log(JSON.parse(queryStr));
 
     this.query.find(JSON.parse(queryStr));
     // let query = Tour.find(JSON.parse(queryStr));
@@ -25,6 +25,12 @@ class APIFeatures {
   sort() {
     // 2) Sorting
     if (this.queryString.sort) {
+      console.log(this.queryString.sort);
+      // test at postman "Get All Tours"
+      // setting Params
+      // {{URL}}api/v1/tours?sort=duration&sort=price
+      // result in Terminal
+      // Error [ 'duration', 'price' ] // it's not setting middleware of "hpp"
       const sortBy = this.queryString.sort.split(',').join(' ');
       console.log(sortBy);
       this.query = this.query.sort(sortBy); // update const query to let query

@@ -132,3 +132,31 @@ npm i ndb --save-dev
 
 - "debug": "npx ndb server.js" at package.json <!-- nvm install v16 -->
 - npm run debug
+
+npm i bcryptjs
+
+npm i jsonwebtoken
+
+# Postman "No Environment" setting
+
+## Add Environment
+
+- VARIABLE: URL, INITIAL VALUE: http://127.0.0.1:3000/
+- replace all URL from http://127.0.0.1:3000/ to {{URL}}
+- Tests at "Signup" add "pm.environment.set("jwt", pm.response.json().token);"
+- Tests at "Login" add "pm.environment.set("jwt", pm.response.json().token);"
+- Authorization at "Get All Tours" add Type: Bearer Token, Token: {{jwt}}
+
+# import Dependencies
+
+npm i nodemailer
+
+npm i express-rate-limit
+
+npm i helmet
+
+npm i express-mongo-sanitize
+
+npm i xss-clean
+
+npm i hpp

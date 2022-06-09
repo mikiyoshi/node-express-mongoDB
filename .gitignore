@@ -17,6 +17,11 @@ config.env
 /**/userModel[0-9]*.js
 /**/authController[0-9]*.js
 /**/apiFeatures[0-9]*.js
+/**/import-dev-data[0-9]*.js
+/**/reviewModel[0-9]*.js
+/**/reviewController[0-9]*.js
+/**/reviewRoutes[0-9]*.js
+/**/handlerFactory[0-9]*.js
 
 /complete-node-bootcamp-master
 /1-node-farm/final

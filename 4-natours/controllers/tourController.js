@@ -1,9 +1,10 @@
 // const fs = require('fs');
 const Tour = require('./../models/tourModel');
 
-const APIFeatures = require('./../utils/apiFeatures');
+// const APIFeatures = require('./../utils/apiFeatures'); // import at handlerFactory.js
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -13,116 +14,13 @@ exports.aliasTopTours = (req, res, next) => {
 };
 
 // 2) ROUTE HANDLERS
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // EXECUTE QUERY
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  // const tours = await query;
-  const tours = await features.query;
+exports.getAllTours = factory.getAll(Tour);
 
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    // requestedAt: req.requestTime,
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
-exports.getTour = catchAsync(async (req, res, next) => {
-  // try {
-  const tour = await Tour.findById(req.params.id); // req.params.id come from router.route('/:id') of tourRoutes.js
-  // Tour.findOne({ _id: req.params.id })
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 
-  // test at postman "127.0.0.1:3000/api/v1/tours/6287eac34fd5da374a4cb375" 最後の数字のみ変更して、存在しないIDを検索
-  // result in postman
-  //   {
-  //     "status": "success",
-  //     "data": {
-  //         "tour": null
-  //     }
-  // }
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404)); // import "AppError" in top of this file
-  }
-  // after update test at postman "127.0.0.1:3000/api/v1/tours/6287eac34fd5da374a4cb375" 最後の数字のみ変更して、存在しないIDを検索
-  // result in postman
-  //   {
-  //     "status": "fail",
-  //     "message": "No tour found with that ID"
-  // }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  });
-});
-
-// // Implement // export to catchAsync.js
-// const catchAsync = (fn) => {
-//   return (req, res, next) => {
-//     fn(req, res, next).catch(next);
-//   };
-// };
-
-exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour
-    }
-  });
-});
-
-exports.updateTour = catchAsync(async (req, res, next) => {
-  // mongoose documentation is very important!!!! 重要!!!
-  // .findByIdAndUpdate documentation from mongoose
-  // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
-  // A.findByIdAndUpdate(id, update, options)  // returns Query
-  // Options:
-  // new: bool - true to return the modified document rather than the original. defaults to false
-  // runValidators: if true, runs update validators on this command. Update validators validate the update
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true // this is validator // runValidators: false is not work validator of tourModule.js
-  });
-
-  // same as getTour
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404)); // import "AppError" in top of this file
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      // tour: '<Updated tour here...>',
-      // tour: tour
-      tour
-    }
-  });
-});
-
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id); // create "tour" parameter
-
-  // same as getTour and create "tour" parameter
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404)); // import "AppError" in top of this file
-  }
-
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-});
+exports.createTour = factory.createOne(Tour);
+exports.updateTour = factory.updateOne(Tour);
+exports.deleteTour = factory.deleteOne(Tour);
 
 // aggregation pipeline // 集計パイプライン データを集計してソートやフィルターができる
 // https://www.mongodb.com/docs/manual/reference/operator/query/ // $gte: Matches values that are greater than or equal to a specified value.
@@ -147,9 +45,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     {
       $sort: { avgPrice: 1 } // avgPrice を降順(-1 昇順)に並び替える
     }
-    // {
-    //   $match: { _id: { $ne: 'EASY' } }, // excluding 'EASY' //'EASY' を除外する
-    // },
   ]);
   res.status(200).json({
     status: 'success',
@@ -204,3 +99,94 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+// this is from tourRoutes.js
+// '/tours-within/:distance/center/:latlng/unit/:unit'
+// /tours-within/233/center/34.111745,-118.113491/unit/mi // mi is miles
+exports.getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1; // mi is miles
+
+  if (!lat || !lng) {
+    next(
+      new AppError(
+        'Please provide latitutr and longitude in the format lat, lng.',
+        400
+      )
+    );
+  }
+
+  // console.log(distance, lat, lng, unit);
+  const tours = await Tour.find({
+    startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      data: tours
+    }
+  });
+});
+
+exports.getDistances = catchAsync(async (req, res, next) => {
+  const { latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001; // 1 meter to miles
+
+  if (!lat || !lng) {
+    next(
+      new AppError(
+        'Please provide latitutr and longitude in the format lat, lng.',
+        400
+      )
+    );
+  }
+
+  const distances = await Tour.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lng * 1, lat * 1]
+        },
+        distanceField: 'distance',
+        distanceMultiplier: multiplier
+      }
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1
+      }
+    }
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: distances
+    }
+  });
+});
+// test at postman "Get Distances to Tours From Point"
+// {{URL}}api/v1/tours/distances/34.111745,-118.113491/unit/mi // this is miles
+// {{URL}}api/v1/tours/distances/34.111745,-118.113491/unit/km // this is km
+// result in postman // 距離が近い順に表示される
+// "status": "success",
+// "data": {
+//     "data": [
+//         {
+//             "_id": "5c88fa8cf4afda39709c2966",
+//             "name": "The Sports Lover",
+//             "distance": 40.208593926228964 // km is 64.70947940317292
+//         },
+//         {
+//             "_id": "5c88fa8cf4afda39709c2961",
+//             "name": "The Park Camper",
+//             "distance": 216.34066637146643 // km is 348.1666610953302
+//         },

@@ -143,7 +143,7 @@ npm i jsonwebtoken
 
 - VARIABLE: URL, INITIAL VALUE: http://127.0.0.1:3000/
 - replace all URL from http://127.0.0.1:3000/ to {{URL}}
-- Tests at "Signup" add "pm.environment.set("jwt", pm.response.json().token);"
+- Tests at "Sign up" add "pm.environment.set("jwt", pm.response.json().token);"
 - Tests at "Login" add "pm.environment.set("jwt", pm.response.json().token);"
 - Authorization at "Get All Tours" add Type: Bearer Token, Token: {{jwt}}
 
@@ -160,3 +160,87 @@ npm i express-mongo-sanitize
 npm i xss-clean
 
 npm i hpp
+
+# Security Practice <!-- 141 -->
+
+<!-- PDF 分割ページ保存 Organize Pages 右の縦が横になるアイコン > Extract 上にあるアイコン -->
+
+![Security Practice](/docs/security.png)
+
+# Data Modeling <!-- 147 -->
+
+![referencing vs embedding](/docs/referencing-vs-embedding.png)
+![types of referencing](/docs/types-of-referencing.png)
+![types of relationships between data](/docs/types-of-relationships-between-data.png)
+![practical framework](/docs/practical-framework.png)
+
+# Modeling Location (Geo spatial Data) <!-- 150 -->
+
+node ./dev-data/data/import-dev-data.js --delete
+node ./dev-data/data/import-dev-data.js --import
+
+Check in your MongoDB Updated "tours"
+
+# Setting Authorization at postman
+
+## Bearer Token
+
+- Get All Users
+- Get User
+- Update User
+- Delete User
+- Create New Tour
+- Update Tour
+- Delete Tour
+- Get Monthly Plan
+- Get All Reviews
+- Get Review
+- Create New Review
+- Update Review
+- Delete Review
+- Create New Review on Tour
+- Get All Reviews on Tour
+
+# Inherit auth from parent
+
+- Get All Tours
+- Get tour
+- Get Top 5 Cheap Tours
+
+# Update Database with import-dev-data.js
+
+## comment out userModel.js
+
+- userSchema.pre('save', async function(next) { ... })
+- userSchema.pre('save', function(next) { ... })
+
+## update Terminal command
+
+```
+node ./dev-data/data/import-dev-data.js --delete
+```
+
+```
+node ./dev-data/data/import-dev-data.js --import
+```
+
+## result in MongoDB same as "tours.json, users.json and reviews.json"
+
+## remove comment out userModel.js
+
+- userSchema.pre('save', async function(next) { ... })
+- userSchema.pre('save', function(next) { ... })
+
+# Postman setting <!-- 173 -->
+
+## Dev: Natours
+
+- VARIABLE: password
+- INITIAL VALUE: test1234
+
+## Prod: Natours
+
+- VARIABLE: password
+- INITIAL VALUE: test1234
+
+### at "Login" Body can use "{{password}}" parameter

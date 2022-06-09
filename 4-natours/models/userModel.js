@@ -49,6 +49,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+/////////////////////// import-dev-data.js comment out start
 // Password management
 userSchema.pre('save', async function(next) {
   // Only run this function if password was actually modified
@@ -69,6 +70,7 @@ userSchema.pre('save', function(next) {
   this.passwordChangedAt = Date.now() - 1000; // 1000sec
   next();
 });
+/////////////////////// import-dev-data.js comment out end
 
 userSchema.pre(/^find/, function(next) {
   // REGEX 正規表現 /^find/

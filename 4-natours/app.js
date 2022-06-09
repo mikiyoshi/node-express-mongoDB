@@ -11,6 +11,7 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
 
@@ -55,10 +56,6 @@ app.use(
     ]
   })
 );
-// test at postman "Get All Tours"
-// setting Params
-// {{URL}}api/v1/tours?sort=duration&sort=price // この場合は price(最後に書かれたもの) が優先されてソートする
-// {{URL}}api/v1/tours?duration=9&duration=5 // result in postman // duration=5 or 9
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
@@ -74,6 +71,7 @@ app.use((req, res, next) => {
 // 3) ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // This MUST set in the end, otherwise it's all error
 app.all('*', (req, res, next) => {

@@ -6,19 +6,51 @@ const router = express.Router(); // replace from userRouter to router
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
-
 router.post('/forgotPassword', authController.forgotPassword);
-// router.patch('/resetPassword', authController.resetPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
+
+// Protect all routes after this middleware
+router.use(authController.protect); // after this setting can remove "authController.protect"
+// test at postman "Get Current User"
+// setting Authorization "Bearer Token"
+// result in postman
+// "status": "success",
+// setting Authorization "Inherit auth from parent"
+// result in postman
+// "status": "fail",
 
 router.patch(
   '/updateMyPassword',
-  authController.protect,
+  // authController.protect,
   authController.updatePassword
 );
 
-router.patch('/updateMe', authController.protect, userController.updateMe);
-router.delete('/deleteMe', authController.protect, userController.deleteMe);
+router.get(
+  '/me',
+  // authController.protect,
+  userController.getMe,
+  userController.getUser
+);
+
+router.patch(
+  '/updateMe',
+  // authController.protect,
+  userController.updateMe
+);
+router.delete(
+  '/deleteMe',
+  // authController.protect,
+  userController.deleteMe
+);
+
+router.use(authController.restrictTo('admin'));
+// test at postman "Login" as "admin"
+// result in postman "Get All Users"
+// "status": "success",
+// test at postman "Login" as not "admin"
+// result in postman "Get All Users"
+// "status": "fail",
+// "message": "You do not have permission to perform this action",
 
 router
   .route('/')

@@ -2,26 +2,29 @@
 config.env
 
 /**/history[0-9]*.txt
-/**/app[0-9]*.js
-/**/server[0-9]*.js
+# /**/app[0-9]*.js
+# /**/server[0-9]*.js
 /**/.eslintrc[0-9]*.json
-/**/tourRoutes[0-9]*.js
-/**/userRoutes[0-9]*.js
-/**/tourController[0-9]*.js
-/**/userController[0-9]*.js
-/**/package[0-9]*.json
-/**/tourModel[0-9]*.js
-/**/tours-simple[0-9]*.json
-/**/errorController[0-9]*.js
-/**/appError[0-9]*.js
-/**/userModel[0-9]*.js
-/**/authController[0-9]*.js
-/**/apiFeatures[0-9]*.js
-/**/import-dev-data[0-9]*.js
-/**/reviewModel[0-9]*.js
-/**/reviewController[0-9]*.js
-/**/reviewRoutes[0-9]*.js
-/**/handlerFactory[0-9]*.js
+# /**/tourRoutes[0-9]*.js
+# /**/userRoutes[0-9]*.js
+# /**/tourController[0-9]*.js
+# /**/userController[0-9]*.js
+# /**/package[0-9]*.json
+# /**/tourModel[0-9]*.js
+# /**/tours-simple[0-9]*.json
+# /**/errorController[0-9]*.js
+# /**/appError[0-9]*.js
+# /**/userModel[0-9]*.js
+# /**/authController[0-9]*.js
+# /**/apiFeatures[0-9]*.js
+# /**/import-dev-data[0-9]*.js
+# /**/reviewModel[0-9]*.js
+# /**/reviewController[0-9]*.js
+# /**/reviewRoutes[0-9]*.js
+# /**/handlerFactory[0-9]*.js
+/**/*[0-9]*.pug
+/**/*[0-9]*.js
+/**/*[0-9]*.json
 
 /complete-node-bootcamp-master
 /1-node-farm/final

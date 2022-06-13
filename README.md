@@ -161,6 +161,21 @@ npm i xss-clean
 
 npm i hpp
 
+npm i pug<!-- 175 -->
+
+npm i cookie-parser<!-- 189 -->
+
+npm i parcel-bundler --save-dev<!-- 191 -->
+
+npm i axios<!-- 191 -->
+
+npm i @babel/polyfill<!-- 191 -->
+
+# import CDN JS
+
+- axios[https://cdnjs.com/libraries/axios]<!-- 189 -->
+  https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js
+
 # Security Practice <!-- 141 -->
 
 <!-- PDF 分割ページ保存 Organize Pages 右の縦が横になるアイコン > Extract 上にあるアイコン -->
@@ -244,3 +259,40 @@ node ./dev-data/data/import-dev-data.js --import
 - INITIAL VALUE: test1234
 
 ### at "Login" Body can use "{{password}}" parameter
+
+# mapbox
+
+## Create New Account
+
+mapbox [https://account.mapbox.com/]
+
+# parcel bundler
+
+The zero configuration build tool.
+
+- parcel-bundler[https://www.npmjs.com/package/parcel-bundler]
+  - parcel[https://parceljs.org/]
+
+```
+npm i parcel-bundler --save-dev
+```
+
+## setting at package.json
+
+```
+  "scripts": {
+    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
+    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
+  }
+```
+
+## run terminal
+
+```
+
+npm run watch:js
+
+```
+
+- ./public/js/bundle.js
+- ./public/js/bundle.js.map

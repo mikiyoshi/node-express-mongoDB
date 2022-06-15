@@ -14,10 +14,8 @@ class APIFeatures {
     // 1B) Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`); // Regular expressions 正規表現
-    // console.log(JSON.parse(queryStr));
 
     this.query.find(JSON.parse(queryStr));
-    // let query = Tour.find(JSON.parse(queryStr));
 
     return this;
   }
@@ -26,14 +24,9 @@ class APIFeatures {
     // 2) Sorting
     if (this.queryString.sort) {
       console.log(this.queryString.sort);
-      // test at postman "Get All Tours"
-      // setting Params
-      // {{URL}}api/v1/tours?sort=duration&sort=price
-      // result in Terminal
-      // Error [ 'duration', 'price' ] // it's not setting middleware of "hpp"
       const sortBy = this.queryString.sort.split(',').join(' ');
       console.log(sortBy);
-      this.query = this.query.sort(sortBy); // update const query to let query
+      this.query = this.query.sort(sortBy); // update "const" query to "let" query
     } else {
       this.query = this.query.sort('-createdAt');
     }
@@ -59,11 +52,6 @@ class APIFeatures {
     const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit; // query.skip(10).limit(10); // page=2&limit=10 // query.skip(20).limit(10); // page=3&limit=10
     this.query = this.query.skip(skip).limit(limit); // page=2&limit=10
-
-    // if (this.queryString.page) {
-    //   const numTours = await Tour.countDocuments();
-    //   if (skip >= numTours) throw new Error('This page does not exist');
-    // }
 
     return this;
   }

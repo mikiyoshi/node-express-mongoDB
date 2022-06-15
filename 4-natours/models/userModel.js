@@ -16,7 +16,11 @@ const userSchema = new mongoose.Schema({
     lowercase: true, // miki@ginal.com.ca
     validate: [validator.isEmail, 'Please provide a valid email'] // check documentation validator // sample error: miki@miki, miki@miki.i
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: 'default.jpg'
+  },
+  // photo: String,
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
@@ -72,10 +76,8 @@ userSchema.pre('save', function(next) {
 });
 /////////////////////// import-dev-data.js comment out end
 
+// REGEX 正規表現 /^find/
 userSchema.pre(/^find/, function(next) {
-  // REGEX 正規表現 /^find/
-  // this points to the current query
-  // this.find({ active: true });
   this.find({ active: { $ne: false } }); // $ne: false means not equal false = only true
   next();
 });
@@ -90,7 +92,6 @@ userSchema.methods.correctPassword = async function(
 
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   if (this.passwordChangedAt) {
-    // console.log(this.passwordChangedAt, JWTTimestamp);
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10

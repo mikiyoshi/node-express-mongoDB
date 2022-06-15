@@ -25,6 +25,7 @@ config.env
 /**/*[0-9]*.pug
 /**/*[0-9]*.js
 /**/*[0-9]*.json
+/**/*[0-9].env
 
 /complete-node-bootcamp-master
 /1-node-farm/final

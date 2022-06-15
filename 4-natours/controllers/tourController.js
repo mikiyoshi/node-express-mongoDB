@@ -1,10 +1,64 @@
-// const fs = require('fs');
+const multer = require('multer');
+const sharp = require('sharp');
 const Tour = require('./../models/tourModel');
-
-// const APIFeatures = require('./../utils/apiFeatures'); // import at handlerFactory.js
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
+const AppError = require('./../utils/appError');
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images', 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+exports.uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 }
+]);
+
+exports.resizeTourImages = catchAsync(async (req, res, next) => {
+  console.log(req.files);
+
+  if (!req.files.imageCover || !req.files.images) return next();
+
+  // 1) Cover image
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/tours/${req.body.imageCover}`);
+
+  // 2) Image
+  req.body.images = [];
+
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/img/tours/${filename}`);
+
+      req.body.images.push(filename);
+    })
+  );
+
+  console.log(req.body);
+  next();
+});
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -32,8 +86,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     },
     {
       $group: {
-        _id: { $toUpper: '$difficulty' }, // 平均難度別 $toUpper は大文字表記
-        // _id: '$ratingsAverage', // 平均レビュー別
+        _id: { $toUpper: '$difficulty' }, // 平均難度別 $toUpper は大文字表記 // _id: '$ratingsAverage', // 平均レビュー別
         numTours: { $sum: 1 },
         numRatings: { $sum: '$ratingsQuantity' },
         avgRating: { $avg: '$ratingsAverage' },
@@ -101,8 +154,6 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
 });
 
 // this is from tourRoutes.js
-// '/tours-within/:distance/center/:latlng/unit/:unit'
-// /tours-within/233/center/34.111745,-118.113491/unit/mi // mi is miles
 exports.getToursWithin = catchAsync(async (req, res, next) => {
   const { distance, latlng, unit } = req.params;
   const [lat, lng] = latlng.split(',');
@@ -118,7 +169,6 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
     );
   }
 
-  // console.log(distance, lat, lng, unit);
   const tours = await Tour.find({
     startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });
@@ -173,20 +223,3 @@ exports.getDistances = catchAsync(async (req, res, next) => {
     }
   });
 });
-// test at postman "Get Distances to Tours From Point"
-// {{URL}}api/v1/tours/distances/34.111745,-118.113491/unit/mi // this is miles
-// {{URL}}api/v1/tours/distances/34.111745,-118.113491/unit/km // this is km
-// result in postman // 距離が近い順に表示される
-// "status": "success",
-// "data": {
-//     "data": [
-//         {
-//             "_id": "5c88fa8cf4afda39709c2966",
-//             "name": "The Sports Lover",
-//             "distance": 40.208593926228964 // km is 64.70947940317292
-//         },
-//         {
-//             "_id": "5c88fa8cf4afda39709c2961",
-//             "name": "The Park Camper",
-//             "distance": 216.34066637146643 // km is 348.1666610953302
-//         },

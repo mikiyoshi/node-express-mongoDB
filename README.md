@@ -171,6 +171,14 @@ npm i axios<!-- 191 -->
 
 npm i @babel/polyfill<!-- 191 -->
 
+npm i multer@1.4.1<!-- 199 // npm i multer バージョン指定　https://stackabuse.com/npm-install-specific-version-of-a-package/ -->
+
+npm i sharp<!-- 202 -->
+
+npm i html-to-text<!-- 206 -->
+
+npm i stripe <!-- 210 -->
+
 # import CDN JS
 
 - axios[https://cdnjs.com/libraries/axios]<!-- 189 -->
@@ -296,3 +304,16 @@ npm run watch:js
 
 - ./public/js/bundle.js
 - ./public/js/bundle.js.map
+
+# Create new account at Send Grid [https://app.sendgrid.com/] [https://sendgrid.kke.co.jp/docs/]
+
+- Confirm your account email address
+- Dashboard > Setup Guide > Send your first email > Integrate using our Web API or SMTP Relay > SMTP Relay
+- Create an API key
+  - update config.env SENDGRID_USERNAME and SENDGRID_PASSWORD
+
+# create test mail at mailsac.com [https://mailsac.com/]
+
+# Developer test payment system by stripe.com [stripe.com]
+
+- document [https://stripe.com/docs/payments]

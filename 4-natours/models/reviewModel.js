@@ -40,15 +40,7 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function(next) {
-  // this.populate({
-  //   path: 'tour',
-  //   select: 'name'
-  // }).populate({
-  //   path: 'user',
-  //   select: 'name photo'
-  // });
   this.populate({
-    // .populate can get a detail property result
     path: 'user', // this is reviewSchema.user line around 25
     select: 'name photo' // get name and photo properties // -(マイナス)name -(マイナス)photo means without name and photo properties
   });
@@ -57,9 +49,8 @@ reviewSchema.pre(/^find/, function(next) {
 });
 
 reviewSchema.statics.calcAverageRatings = async function(tourId) {
-  // console.log(tourId);
+  // aggregation pipeline // aggregate 総計の, 総合の; 集合した
   const stats = await this.aggregate([
-    // aggregation pipeline // aggregate 総計の, 総合の; 集合した
     {
       $match: { tour: tourId } // tourId に一致(含む)する
     },
@@ -71,7 +62,6 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
       }
     }
   ]);
-  // console.log(stats);
 
   // check at least 1 review or not
   if (stats.length > 0) {
@@ -93,12 +83,8 @@ reviewSchema.post('save', function() {
   this.constructor.calcAverageRatings(this.tour);
 });
 
-// findByIdAndUpdate
-// findByIdAndDelete
 reviewSchema.pre(/^findOneAnd/, async function(next) {
-  // const r = await this.findOne();
   this.r = await this.findOne();
-  // console.log(this.r);
   next();
 }); // この状態では update 後のデータを review の平均と合計に計算させていない
 

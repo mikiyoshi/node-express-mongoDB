@@ -14,6 +14,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -24,7 +25,6 @@ app.set('views', path.join(__dirname, 'views'));
 // 1) GLOBAL MIDDLEWARES
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.static(`${__dirname}/public`));
 
 // console.log(process.env.NODE_ENV);
 // Set Security HTTP headers // documentation from https://github.com/helmetjs/helmet
@@ -72,44 +72,18 @@ app.use(
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  // console.log(req.headers); // take look header
-  // console.log(x); // UNCAUGHT error test
-  console.log(req.cookies);
   next();
 });
 
 // 3) ROUTES
-// app.get('/', (req, res) => {
-//   res.status(200).render('base', {
-//     tour: 'The Forest Hiker', // in pug h1= tour calls 'The Forest Hiker'
-//     user: 'Jonas'
-//   }); // this is call from /views/base.pug
-// });
-
-// app.get('/overview', (req, res) => {
-//   res.status(200).render('overview', {
-//     title: 'All Tours'
-//   });
-// });
-
-// app.get('/tour', (req, res) => {
-//   res.status(200).render('tour', {
-//     title: 'The Forest Hiker Tour'
-//   });
-// });
-
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 // This MUST set in the end, otherwise it's all error
 app.all('*', (req, res, next) => {
-  // const err = new Error(`Can't find ${req.originalUrl} on this server!`); // create constructor
-  // err.status = 'fail';
-  // err.statusCode = 404;
-
-  // next(err);
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 

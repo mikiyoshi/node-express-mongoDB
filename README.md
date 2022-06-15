@@ -323,3 +323,18 @@ npm run build:js
 # Developer test payment system by stripe.com [stripe.com]
 
 - document [https://stripe.com/docs/payments]
+
+# Heroku
+
+- create account [https://dashboard.heroku.com/]
+
+```
+brew install heroku/brew/heroku
+```
+
+- update package.json
+
+```
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+```

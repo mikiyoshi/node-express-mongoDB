@@ -179,6 +179,8 @@ npm i html-to-text<!-- 206 -->
 
 npm i stripe <!-- 210 -->
 
+npm i compression <!-- 222 -->
+
 # import CDN JS
 
 - axios[https://cdnjs.com/libraries/axios]<!-- 189 -->
@@ -290,7 +292,7 @@ npm i parcel-bundler --save-dev
 ```
   "scripts": {
     "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
   }
 ```
 
@@ -300,6 +302,10 @@ npm i parcel-bundler --save-dev
 
 npm run watch:js
 
+```
+
+```
+npm run build:js
 ```
 
 - ./public/js/bundle.js

@@ -1,0 +1,55 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.cache/
+config.env
+
+history[0-9]*.txt
+# app[0-9]*.js
+# server[0-9]*.js
+.eslintrc[0-9]*.json
+# tourRoutes[0-9]*.js
+# userRoutes[0-9]*.js
+# tourController[0-9]*.js
+# userController[0-9]*.js
+# package[0-9]*.json
+# tourModel[0-9]*.js
+# tours-simple[0-9]*.json
+# errorController[0-9]*.js
+# appError[0-9]*.js
+# userModel[0-9]*.js
+# authController[0-9]*.js
+# apiFeatures[0-9]*.js
+# import-dev-data[0-9]*.js
+# reviewModel[0-9]*.js
+# reviewController[0-9]*.js
+# reviewRoutes[0-9]*.js
+# handlerFactory[0-9]*.js
+*[0-9]*.pug
+*[0-9]*.js
+*[0-9]*.json
+*[0-9].env
+
+after-section-*
+starter/
+
+# dependencies
+*.pdf
+node_modules/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

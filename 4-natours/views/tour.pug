@@ -81,6 +81,36 @@ block content
       each review in tour.reviews
         +reviewCard(review)
 
+  section.section-cta-review
+    .cta
+      .cta__img.cta__img--logo
+        img(src='/img/logo-white.png', alt='Natours logo')
+      img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Tour Picture')
+      img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='Tour Picture')
+      .cta__content
+        h2.heading-secondary Write a review
+
+
+        if tour.reviews
+          each review in tour.reviews
+            if (user.name === review.user.name)
+              div
+                form.form.form-review-data(action=`/submit-review-data/${tour.slug}`, method='POST')
+                  .form__group
+                    label.form__label(for='review') Review
+                    //- textarea#review.form__input(type='review' rows='5')
+                    textarea#review.form__input(type='text' rows='2' name='review')= review.review
+                    //- input#rating.form__input(type='text', value=`${review.review}` name='review')
+                  .form__group
+                    label.form__label(for='rating') Rating
+                    //- input#rating.form__input(type='review')
+                    input#rating.form__input(type='text', value=`${review.rating}` name='rating')
+                  .form__group.right
+                    if user
+                      button.btn.btn--green.span-all-rows.btn--review-update Post a review!
+                    else
+                      button.btn.btn--green.span-all-rows(href='/login') Log in to review tour
+
   section.section-cta
     .cta
       .cta__img.cta__img--logo

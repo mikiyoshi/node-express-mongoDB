@@ -1,22 +1,40 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
+import { signup } from './signup';
 import { login, logout } from './login';
 import { updateSettings } from './updateSettings';
+import { deleteSettings } from './deleteSettings';
 import { bookTour } from './stripe';
+import { showAlert } from './alerts';
 
 // DOM ELEMENT
 const mapBox = document.getElementById('map');
+const signupForm = document.querySelector('.form--signup');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
-const userDataForm = document.querySelector('.form-user-data');
-const userPasswordForm = document.querySelector('.form-user-password');
+const userDataForm = document.querySelector('.form-user-data'); // from account.pug form
+const userPasswordForm = document.querySelector('.form-user-password'); // from account.pug form
+// const reviewDataForm = document.querySelector('.form-review-data');
+const reviewDelete = document.querySelector('.btn-review-delete');
 const bookBtn = document.getElementById('book-tour');
 
 // DELEGATION
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
   displayMap(locations);
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', e => {
+    e.preventDefault();
+    console.log('index.js', name, email, password, passwordConfirm);
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    signup(name, email, password, passwordConfirm);
+  });
 }
 
 if (loginForm) {
@@ -69,3 +87,32 @@ if (bookBtn)
     const { tourId } = e.target.dataset;
     bookTour(tourId);
   });
+
+// if (reviewDataForm)
+//   reviewDataForm.addEventListener('submit', async e => {
+// e.preventDefault();
+// document.querySelector('.btn--review-update').textContent = 'Updating...';
+// const review = document.getElementById('review').value;
+// const rating = document.getElementById('rating').value;
+// console.log(form);
+// document.querySelector('.btn--review-update').textContent = 'Save review';
+// await updateSettings({ review, rating }, 'review');
+// document.getElementById('review').value = '';
+// document.getElementById('rating').value = '';
+// e.preventDefault();
+// const form = new FormData();
+// form.append('review', document.getElementById('review').value);
+// form.append('rating', document.getElementById('rating').value);
+// console.log(form);
+// updateSettings(form, 'data');
+// });
+
+if (reviewDelete)
+  reviewDelete.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+    // const { tourId } = e.target.dataset;
+    // deleteSettings tourId;
+  });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);

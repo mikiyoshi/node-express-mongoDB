@@ -1,7 +1,11 @@
+# Travel Tour Booking Service
+
+[Travel Tour Booking Service by Heroku](https://mknatours.herokuapp.com/)
+
 # Node.js Express MongoDB
 
-1.
-2.
+1. Backend MongoDB
+2. Front End Node.js
 
 # Dependencies
 
@@ -181,10 +185,15 @@ npm i stripe <!-- 210 -->
 
 npm i compression <!-- 222 -->
 
+npm i cors <!-- 226 -->
+
+Use express.raw instead of bodyParser.raw (no need to install body-parser)
+npm i body-parser <!-- 227 -->
+
 # import CDN JS
 
-- axios[https://cdnjs.com/libraries/axios]<!-- 189 -->
-  https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js
+- [axios](https://cdnjs.com/libraries/axios)<!-- 189 -->
+  [axios manual](https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js)
 
 # Security Practice <!-- 141 -->
 
@@ -274,14 +283,14 @@ node ./dev-data/data/import-dev-data.js --import
 
 ## Create New Account
 
-mapbox [https://account.mapbox.com/]
+[mapbox](https://account.mapbox.com/)
 
 # parcel bundler
 
 The zero configuration build tool.
 
-- parcel-bundler[https://www.npmjs.com/package/parcel-bundler]
-  - parcel[https://parceljs.org/]
+- [parcel-bundler](https://www.npmjs.com/package/parcel-bundler)
+  - [parcel](https://parceljs.org/)
 
 ```
 npm i parcel-bundler --save-dev
@@ -311,22 +320,24 @@ npm run build:js
 - ./public/js/bundle.js
 - ./public/js/bundle.js.map
 
-# Create new account at Send Grid [https://app.sendgrid.com/] [https://sendgrid.kke.co.jp/docs/]
+# Create new account at [Send Grid](https://app.sendgrid.com/) [Send Grid Document](https://sendgrid.kke.co.jp/docs/)
 
 - Confirm your account email address
 - Dashboard > Setup Guide > Send your first email > Integrate using our Web API or SMTP Relay > SMTP Relay
 - Create an API key
   - update config.env SENDGRID_USERNAME and SENDGRID_PASSWORD
 
-# create test mail at mailsac.com [https://mailsac.com/]
+# create test mail at [mailsac.com](https://mailsac.com/)
 
-# Developer test payment system by stripe.com [stripe.com]
+# Developer test payment system by [stripe.com](stripe.com)
 
-- document [https://stripe.com/docs/payments]
+- [stripe.com document](https://stripe.com/docs/payments)
 
 # Heroku
 
-- create account [https://dashboard.heroku.com/]
+[Travel Tour Booking Service by Heroku](https://mknatours.herokuapp.com/)
+
+- [create account](https://dashboard.heroku.com/)
 
 ```
 brew install heroku/brew/heroku
@@ -337,4 +348,57 @@ brew install heroku/brew/heroku
 ```
     "start": "node server.js",
     "dev": "nodemon server.js",
+```
+
+```
+heroku login
+heroku create
+git push heroku master
+heroku open
+```
+
+error log
+
+```
+heroku logs --tail
+```
+
+copy from config.env
+
+- this setting can edit at "heroku" setting > Config Vars > Reveal Config Vars
+
+```
+heroku config:set NODE_ENV=production
+heroku config:set DATABASE='XXX'
+heroku config:set DATABASE_PASSWORD=
+heroku config:set JWT_SECRET=
+heroku config:set JWT_EXPIRES_IN=90d
+heroku config:set JWT_COOKIE_EXPIRES_IN=90
+heroku config:set EMAIL_FROM=
+heroku config:set SENDGRID_USERNAME=
+heroku config:set SENDGRID_PASSWORD=
+heroku config:set STRIPE_SECRET_KEY=
+heroku config:set STRIPE_WEBHOOK_SECRET=
+
+heroku open
+
+heroku apps:rename mknatours
+```
+
+when update file
+if some js files update in /public/js/
+
+```
+npm run build:js
+```
+
+without /public/js/ updated
+
+```
+git push heroku master
+
+heroku ps
+heroku ps:restart
+
+heroku logs --tail
 ```

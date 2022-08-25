@@ -6,11 +6,7 @@ const router = express.Router();
 
 router.use(authController.protect); // login check
 
-router.get(
-  '/checkout-session/:tourId',
-  authController.protect,
-  bookingController.getCheckoutSession
-);
+router.get('/checkout-session/:tourId', bookingController.getCheckoutSession);
 
 router.use(authController.restrictTo('admin', 'lead-guide')); // permission for user role
 

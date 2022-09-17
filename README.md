@@ -329,9 +329,9 @@ npm run build:js
 
 # create test mail at [mailsac.com](https://mailsac.com/)
 
-- mailsac.com is only recieve Email at mailsac.com account
-- formsubmit.co[https://formsubmit.co/]is send and recieve Email in your specific Email
-  - Demo[https://formsubmit.co/live-demo]
+- mailsac.com is only receive Email at mailsac.com account
+- [formsubmit.co](https://formsubmit.co/) is send and receive Email in your specific Email
+  - [Demo](https://formsubmit.co/live-demo)
 
 # Developer test payment system by [stripe.com](stripe.com)
 

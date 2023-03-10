@@ -316,6 +316,8 @@ body {
 }
 @media only screen and (max-width: 62.5em) {
   .header {
+    padding: 2rem 5rem;
+    height: auto;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -1082,9 +1084,10 @@ body {
   max-width: 120rem;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(3, 1fr); */
   grid-gap: 7rem;
 }
+
 
 .card {
   border-radius: 3px;
@@ -1330,4 +1333,27 @@ body {
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
+}
+
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

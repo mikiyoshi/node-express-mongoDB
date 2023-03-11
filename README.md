@@ -1,5 +1,8 @@
 # Travel Tour Booking Service
 
+- render.com
+[Travel Tour Booking Service by render.com](https://natours-gcgm.onrender.com/)
+
 - railway.app
 [Travel Tour Booking Service by railway.app](https://natours-production-9556.up.railway.app/)
 
@@ -466,6 +469,46 @@ railway login
   public/js/**
   ```
 
+# render.com
+
+- Login by github
+
+- New
+  - Web Service
+    - Web Service Title <!-- なくても良い connect 内で追加する名前が使われる -->
+    - connect repository to your git repository
+      - connect
+        - Name: your title u want
+        - Environment: Node
+        - Region: near your location
+        - Build Command: npm install && npm run build:js <!-- && は && より前の処理の後に、&& より後の処理がされる -->
+        - Start Command: npm start
+        - Plan Type: Free
+        - Advanced:
+          - Add Environment Variables:
+          ```
+          NODE_ENV=production
+          DATABASE='XXX'
+          DATABASE_PASSWORD=
+          JWT_SECRET=
+          JWT_EXPIRES_IN=90d
+          JWT_COOKIE_EXPIRES_IN=90
+          EMAIL_FROM=
+          SENDGRID_USERNAME=
+          SENDGRID_PASSWORD=
+          STRIPE_SECRET_KEY=
+          STRIPE_WEBHOOK_SECRET=
+          ```
+
+- MongoDB
+  - From render.com
+    - connect: Outbound(copy) > Add IP Address(paste)
+  - MongoDB Network Access:
+    - Add IP Address(paste) < connect: Outbound(copy)
+
+
+
+
 # test in your localhost
 ```
 nvm install v16
@@ -473,4 +516,6 @@ npm start
 ```
 - [localhost:3000/](http://localhost:3000/)
 - [127.0.0.1:3000/](http://http://127.0.0.1:3000/)
+
+
 

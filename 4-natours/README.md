@@ -1,16 +1,15 @@
-
 # Travel Tour Booking Service
 
 - render.com
-[Travel Tour Booking Service by render.com](https://natours-gcgm.onrender.com/)
+  [Travel Tour Booking Service by render.com](https://natours-gcgm.onrender.com/)
 
 - railway.app
-[Travel Tour Booking Service by railway.app](https://natours-production-9556.up.railway.app/)
+  [Travel Tour Booking Service by railway.app](https://natours-production-9556.up.railway.app/)
 
   - [git natours](https://github.com/mikiyoshi/natours)
 
 - ~~Heroku~~
-~~[Travel Tour Booking Service by Heroku](https://mknatours.herokuapp.com/)~~
+  ~~[Travel Tour Booking Service by Heroku](https://mknatours.herokuapp.com/)~~
 
 # Node.js Express MongoDB
 
@@ -151,7 +150,12 @@ npm i bcryptjs
 
 npm i jsonwebtoken
 
-# Postman "No Environment" setting
+# Postman "No Environment" setting <!-- 133 -->
+
+- Right menu: You can choose postman setting (Edit by next eye icon)
+  - No Environment
+  - Dev: Natours {{URL}} : http://127.0.0.1:3000/
+  - Prod: Natours {{URL}} : https://natours-gcgm.onrender.com/
 
 ## Add Environment
 
@@ -417,10 +421,10 @@ heroku ps:restart
 heroku logs --tail
 ```
 
-
 # railway.app
 
 - package.json
+
 ```
   "engines": {
     "node": "14.x",
@@ -431,16 +435,19 @@ heroku logs --tail
 ```
 brew install railwayapp/railway/railway
 ```
+
 ```
 railway login
 ```
 
 - Domains
+
   - Generate Domain
 
 - Go to Variables tab in your project and add the environmental variables
 
   - Variables (RAW Editor):
+
   ```
   NODE_ENV=production
   DATABASE='XXX'
@@ -458,16 +465,19 @@ railway login
 - Setting
 
   - Build Command
+
   ```
   npm install
   ```
 
   - Start Command
+
   ```
   npm run start
   ```
 
   - Watch Paths
+
   ```
   public/js/**
   ```
@@ -477,6 +487,7 @@ railway login
 - Login by github
 
 - New
+
   - Web Service
     - Web Service Title <!-- なくても良い connect 内で追加する名前が使われる -->
     - connect repository to your git repository
@@ -509,12 +520,41 @@ railway login
   - MongoDB Network Access:
     - Add IP Address(paste) < connect: Outbound(copy)
 
-    
 # test in your localhost
+
 ```
 nvm install v16
+```
+
+<!-- build:js された ./public/js/bundle.js が毎回テスト環境で動いている -->
+
+```
+npm run build:js
+```
+
+<!-- テストで postman を使うときは Dev: Natours に変更すること -->
+
+```
 npm start
 ```
+
 - [localhost:3000/](http://localhost:3000/)
 - [127.0.0.1:3000/](http://http://127.0.0.1:3000/)
 
+# Review update flow
+
+- tour.pug
+  - form-review-data(data-tour-id=\`\${review.id}\`)
+- index.js
+  - reviewDataForm
+  - updateReviews
+- updateReviews.js
+  - PATCH
+  - /api/v1/reviews/\${tourId}
+- reviewRoutes.js
+  - .route('/:id')
+  - .patch(reviewController.updateReview)
+- reviewController.js
+  - factory.updateOne(Review)
+- handleFactory.js
+  - .updateOne

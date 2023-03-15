@@ -72,9 +72,9 @@ exports.getAllTours = factory.getAll(Tour);
 
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 
-exports.createTour = factory.createOne(Tour);
-exports.updateTour = factory.updateOne(Tour);
-exports.deleteTour = factory.deleteOne(Tour);
+exports.createTour = factory.createOne(Tour); // exports.createOne at ./handlerFactory
+exports.updateTour = factory.updateOne(Tour); // exports.updateOne at ./handlerFactory
+exports.deleteTour = factory.deleteOne(Tour); // exports.deleteOne at ./handlerFactory
 
 // aggregation pipeline // 集計パイプライン データを集計してソートやフィルターができる
 // https://www.mongodb.com/docs/manual/reference/operator/query/ // $gte: Matches values that are greater than or equal to a specified value.

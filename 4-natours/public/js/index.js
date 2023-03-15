@@ -4,6 +4,7 @@ import { displayMap } from './mapbox';
 import { signup } from './signup';
 import { login, logout } from './login';
 import { updateSettings } from './updateSettings';
+import { updateReviews } from './updateReviews';
 import { deleteSettings } from './deleteSettings';
 import { bookTour } from './stripe';
 import { showAlert } from './alerts';
@@ -15,7 +16,7 @@ const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data'); // from account.pug form
 const userPasswordForm = document.querySelector('.form-user-password'); // from account.pug form
-// const reviewDataForm = document.querySelector('.form-review-data');
+const reviewDataForm = document.querySelector('.form-review-data'); // from tour.pug form
 const reviewDelete = document.querySelector('.btn-review-delete');
 const bookBtn = document.getElementById('book-tour');
 
@@ -56,9 +57,9 @@ if (userDataForm)
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log(form);
+    console.log('index.js form: ', form);
 
-    updateSettings(form, 'data');
+    updateSettings(form, 'data'); // これが form の POST // public/js/updateSettings.js
   });
 
 if (userPasswordForm)
@@ -69,6 +70,7 @@ if (userPasswordForm)
     const passwordCurrent = document.getElementById('password-current').value; // same as Body from postman Authentication"Update Current User Password"
     const password = document.getElementById('password').value; // same as Body from postman Authentication"Update Current User Password"
     const passwordConfirm = document.getElementById('password-confirm').value; // same as Body from postman Authentication"Update Current User Password"
+    // これが form の POST // public/js/updateSettings.js
     await updateSettings(
       { passwordCurrent, password, passwordConfirm },
       'password'
@@ -88,24 +90,20 @@ if (bookBtn)
     bookTour(tourId);
   });
 
-// if (reviewDataForm)
-//   reviewDataForm.addEventListener('submit', async e => {
-// e.preventDefault();
-// document.querySelector('.btn--review-update').textContent = 'Updating...';
-// const review = document.getElementById('review').value;
-// const rating = document.getElementById('rating').value;
-// console.log(form);
-// document.querySelector('.btn--review-update').textContent = 'Save review';
-// await updateSettings({ review, rating }, 'review');
-// document.getElementById('review').value = '';
-// document.getElementById('rating').value = '';
-// e.preventDefault();
-// const form = new FormData();
-// form.append('review', document.getElementById('review').value);
-// form.append('rating', document.getElementById('rating').value);
-// console.log(form);
-// updateSettings(form, 'data');
-// });
+if (reviewDataForm)
+  reviewDataForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const { tourId } = e.target.dataset;
+    // console.log('index.js tourId', tourId);
+
+    document.querySelector('.btn--review-update').textContent =
+      'Review updating...'; // change button name
+    const review = document.getElementById('review').value;
+    const rating = document.getElementById('rating').value;
+    // console.log('index.js review rating: ', review, rating);
+    await updateReviews({ review, rating }, 'review', tourId); // これが form の POST // public/js/updateReviews.js
+    document.querySelector('.btn--review-update').textContent = 'Save review'; // change button name
+  });
 
 if (reviewDelete)
   reviewDelete.addEventListener('click', e => {

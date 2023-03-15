@@ -8,9 +8,9 @@ exports.setTourUserIds = (req, res, next) => {
   next();
 };
 
-exports.getAllReviews = factory.getAll(Review);
+exports.getAllReviews = factory.getAll(Review); // exports.getAll at ./handlerFactory
 
-exports.getReview = factory.getOne(Review);
-exports.createReview = factory.createOne(Review);
-exports.updateReview = factory.updateOne(Review);
-exports.deleteReview = factory.deleteOne(Review);
+exports.getReview = factory.getOne(Review); // exports.getOne at ./handlerFactory
+exports.createReview = factory.createOne(Review); // exports.createOne at ./handlerFactory
+exports.updateReview = factory.updateOne(Review); // exports.updateOne at ./handlerFactory
+exports.deleteReview = factory.deleteOne(Review); // exports.deleteOne at ./handlerFactory

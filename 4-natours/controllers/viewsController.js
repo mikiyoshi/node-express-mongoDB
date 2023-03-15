@@ -92,7 +92,7 @@ exports.getMyReviews = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUserData = catchAsync(async (req, res, next) => {
-  // console.log('UPDATING USER', req.body);
+  // console.log('UPDATING USER: ', req.body);
   // update /me, UPDATING USER { name: 'Lourdes Fun Browning', email: 'loulou.s@example.com' }
 
   const updatedUser = await User.findByIdAndUpdate(
@@ -108,6 +108,7 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
   );
 
   // submit after return /me page with updated result
+
   res.status(200).render('account', {
     title: 'Your account',
     user: updatedUser
@@ -115,7 +116,8 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
 });
 
 exports.updateReviewData = catchAsync(async (req, res, next) => {
-  console.log('UPDATING REVIEW', req.body);
+  // console.log('UPDATING REVIEW', req.body);
+  // console.log('viewController.js updateReviewData');
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
     fields: 'review rating user'
